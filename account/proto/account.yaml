@@ -1,0 +1,11 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: shakebook.AccountService.GetAccount
+      get: /v1/account/{id}
+    - selector: shakebook.AccountService.CreateAccount
+      post: /v1/account
+      body: "*"
+      
