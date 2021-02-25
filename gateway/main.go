@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	accountpb "shakebook/account/proto/api/v1"
+	accountpb "shakebook/service/account/proto/api/v1"
+	managerpb "shakebook/service/manager/proto/api/v1"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
@@ -13,21 +14,6 @@ import (
 
 func main() {
 	startGRPCGateway()
-	// conn, err := grpc.Dial("localhost:8081", grpc.WithInsecure())
-	// if err != nil {
-	// 	log.Fatalf("grpc dial failed: %v\n", err)
-	// }
-	// defer conn.Close()
-
-	// client := accountpb.NewAccountServiceClient(conn)
-	// res, err := client.GetAccount(context.Background(), &accountpb.GetAccountRequest{
-	// 	Id: 1,
-	// })
-	// if err != nil {
-	// 	log.Printf("get account failed:%v\n", err)
-	// 	return
-	// }
-	// log.Printf("account:%s\n", res)
 }
 
 func startGRPCGateway() {
@@ -45,9 +31,16 @@ func startGRPCGateway() {
 	err := accountpb.RegisterAccountServiceHandlerFromEndpoint(
 		c,
 		mux,
-		":8081",
+		":8082",
 		[]grpc.DialOption{grpc.WithInsecure()},
 	)
+	err = managerpb.RegisterManagerServiceHandlerFromEndpoint(
+		c,
+		mux,
+		":8084",
+		[]grpc.DialOption{grpc.WithInsecure()},
+	)
+
 	if err != nil {
 		log.Fatalf("start grpc gateway failed:%v\n", err)
 	}

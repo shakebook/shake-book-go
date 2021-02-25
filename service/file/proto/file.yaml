@@ -1,0 +1,11 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: shakebook.FileService.Upload
+      post: /v1/upload
+      body: "*"
+
+   
+      

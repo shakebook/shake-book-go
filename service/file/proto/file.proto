@@ -1,0 +1,17 @@
+syntax = "proto3";
+package shakebook;
+option go_package="shakebook/service/upload/proto/api/v1;uploadpb";
+
+message Response {
+  string error = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message UploadRequest {
+  bytes file = 1;
+}
+
+service FileService {
+  rpc Upload (UploadRequest) returns (Response);
+}

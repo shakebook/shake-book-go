@@ -1,0 +1,16 @@
+syntax = "proto3";
+package shakebook;
+option go_package="shakebook/service/auth/proto/api/v1;authpb";
+
+message GenTokenRequest {
+  string id = 1;
+}
+
+message GenTokenResponse {
+  string token = 1;
+}
+
+service AuthService {
+  rpc GenToken (GenTokenRequest) returns (GenTokenResponse);
+}
+

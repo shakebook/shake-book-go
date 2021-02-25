@@ -1,0 +1,25 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: shakebook.AccountService.GetAccount
+      get: /v1/account
+    - selector: shakebook.AccountService.SignUp
+      post: /v1/signup
+      body: "*"
+    - selector: shakebook.AccountService.SignIn
+      post: /v1/signin
+      body: "*"
+    - selector: shakebook.AccountService.SignOut
+      post: /v1/signout
+      body: "*"
+    - selector: shakebook.AccountService.ValidEmail
+      post: /v1/valid/email
+      body: "*"
+    - selector: shakebook.AccountService.UpdateAccountDescript
+      put: /v1/account
+      body: "*"
+    - selector: shakebook.AccountService.GetAccountList
+      get: /v1/account/list
+      

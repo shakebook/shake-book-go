@@ -1,0 +1,96 @@
+syntax = "proto3";
+package shakebook;
+option go_package="shakebook/service/account/proto/api/v1;accountpb";
+import "validate/validate.proto";
+
+message Response {
+  bool success = 1;
+  string message = 2;
+}
+
+message EmptyRequest {}
+
+message SignUpRequest {
+  string account_name  = 1[(validate.rules).string.min_len = 6];
+  string account_email  = 2[(validate.rules).string.email = true];
+  string account_password = 3[(validate.rules).string= {min_len: 6, max_len: 64}];
+  string email_valid_code = 4[(validate.rules).string.len = 6];
+}
+
+message AccountId {
+  int64 id  = 1;
+}
+
+message SignInRequest {
+  string account_name  = 1 [(validate.rules).string.min_len = 6];
+  string account_password = 2 [(validate.rules).string.min_len = 6];
+}
+
+message SignInResponse {
+  bool success = 1;
+  string message = 2;
+  string data = 3;
+}
+
+enum AccountStatus {
+  NORMAL = 0;
+  DISABLE = 1;
+  LOCK = 2;
+  DELETE = 3;
+}
+
+message UpdateAccountDescriptRequest {
+  string account_nickname = 1[(validate.rules).string= {min_len: 1, max_len:10}];
+  string account_name = 2 [(validate.rules).string= {min_len: 6, max_len:20}];
+  string account_desc = 3 [(validate.rules).string= {min_len: 1, max_len:100}];
+}
+
+message Account {
+  AccountInfo info = 1;
+  string account_password = 2;
+}
+
+message ValidEmailRequest {
+  string account_email = 1[(validate.rules).string.email = true];
+}
+
+message GetAccountResponse{
+  bool success = 1;
+  string message = 2;
+  AccountInfo data =3;
+}
+
+message AccountInfo {
+  int64 id = 1;
+  string account_name = 2;
+  string account_phone = 3;
+  string account_email = 4;
+  string signup_at = 5;
+  string last_time = 6;
+  AccountStatus account_status = 7;
+  string image_url = 8;
+  string background_url = 9;
+  string account_desc = 10;
+  int64 thumbs_up = 11;
+  int64 focus_number = 12;
+  int64 fans_number = 13;
+  string account_nickname = 14;
+}
+
+message GetAccountListResponse {
+  bool success = 1;
+  string message = 2;
+  repeated AccountInfo data =3;
+}
+
+
+service AccountService {
+  rpc SignUp (SignUpRequest) returns (Response);
+  rpc SignIn (SignInRequest) returns (SignInResponse);
+  rpc SignOut (AccountId) returns (Response);
+  rpc ValidEmail (ValidEmailRequest) returns (Response);
+  rpc UpdateAccountDescript (UpdateAccountDescriptRequest) returns (Response);
+  rpc GetAccount (EmptyRequest) returns (GetAccountResponse);
+  rpc GetAccountList (EmptyRequest) returns (GetAccountListResponse);
+}
+

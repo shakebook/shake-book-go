@@ -1,0 +1,44 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    #角色
+    - selector: manager.ManagerService.CreateRole
+      post: /v1/role
+      body: "*"
+    - selector: manager.ManagerService.GetRoleList
+      get: /v1/role
+    - selector: manager.ManagerService.UpdateRole
+      put: /v1/role
+      body: "*"
+    - selector: manager.ManagerService.DeleteRole
+      delete: /v1/role
+      body: "*"
+    - selector: manager.ManagerService.RoleBindMenu
+      post: /v1/role/bind/menu
+      body: "*"
+    - selector: manager.ManagerService.AccountBindRole
+      post: /v1/account/bind/role
+      body: "*"
+    - selector: manager.ManagerService.GetRoleBindMenu
+      get: /v1/role/bind/menu/{id}
+    - selector: manager.ManagerService.GetAccountBindRole
+      get: /v1/account/bind/role/{id}
+    - selector: manager.ManagerService.GetAccountMenu
+      get: /v1/account/menu
+    #菜单
+    - selector: manager.ManagerService.CreateMenu
+      post: /v1/managerMenu
+      body: "*"
+    - selector: manager.ManagerService.GetMenuList
+      get: /v1/managerMenu
+    - selector: manager.ManagerService.DeleteMenu
+      delete: /v1/managerMenu
+      body: "*"
+    - selector: manager.ManagerService.UpdateMenu
+      put: /v1/managerMenu
+      body: "*"
+
+
+      

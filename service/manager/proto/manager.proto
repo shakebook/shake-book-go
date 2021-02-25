@@ -1,0 +1,125 @@
+syntax = "proto3";
+package manager;
+option go_package="shakebook/service/manager/proto/api/v1;managerpb";
+import "validate/validate.proto";
+
+message EmptyRequest {}
+
+message Response {
+  bool success = 1;
+  string message = 2;
+}
+
+enum Status {
+  NORMAL = 0;
+  DELETE = 1;
+}
+
+message Role {
+  int32 id = 1;
+  string role_name = 2[(validate.rules).string.min_len = 1];
+  string create_at = 3;
+  Status role_status = 4;
+}
+
+message GetRoleListResponse {
+  bool success = 1;
+  string message = 2;
+  repeated Role data = 3;
+}
+
+message RoleId {
+  int32 id = 1[(validate.rules).int32.gte = 1];
+}
+
+message RoleBindMenuRequest {
+  int32 role_id = 1;
+  repeated int32 menu_ids = 2;
+}
+
+message GetRoleBindMenuResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 data = 3;
+}
+
+message AccountBindRoleRequest {
+  int32 account_id = 1;
+  repeated int32 role_ids = 2;
+}
+
+message AccountId {
+  int32 id = 1[(validate.rules).int32.gte = 1];
+}
+
+message GetAccountBindRoleResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 data = 3;
+}
+
+message GetAccountMenuResponse {
+  bool success = 1;
+  string message = 2;
+  repeated MenuInfo data = 3;
+}
+
+
+//菜单
+message MenuInfo {
+  int32 id = 1;
+  string menu_name = 2;
+  string menu_router = 3;
+  int32 parent_id = 4;
+  string menu_icon = 5;
+  string create_at = 6;
+  Status menu_status = 7;
+}
+
+message CreateMenuRequest {
+  string menu_name = 1[(validate.rules).string.min_len = 1];
+  string menu_router = 2;
+  int32 parent_id = 3;
+  string menu_icon = 4;
+}
+
+message GetMenuListResponse {
+  bool success = 1;
+  string message = 2;
+  repeated MenuInfo data = 3;
+}
+
+message MenuId {
+  int32 id = 1[(validate.rules).int32.gte = 1];
+}
+
+message UpdateMenuRequest {
+  int32 id = 1[(validate.rules).int32.gte = 1];
+  string menu_name = 2[(validate.rules).string.min_len = 1];
+  string menu_router = 3;
+  int32 parent_id = 4;
+  string menu_icon = 5;
+  Status menu_status = 6;
+}
+
+
+service ManagerService {
+  //角色
+  rpc CreateRole (Role) returns (Response);
+  rpc GetRoleList (EmptyRequest) returns (GetRoleListResponse);
+  rpc UpdateRole (Role) returns (Response);
+  rpc DeleteRole (RoleId) returns (Response);
+  rpc RoleBindMenu (RoleBindMenuRequest) returns (Response);
+  rpc GetRoleBindMenu (RoleId) returns (GetRoleBindMenuResponse);
+  rpc AccountBindRole (AccountBindRoleRequest) returns (Response);
+  rpc GetAccountBindRole (AccountId) returns (GetAccountBindRoleResponse);
+  rpc GetAccountMenu (EmptyRequest) returns (GetAccountMenuResponse);
+  
+  //菜单
+  rpc CreateMenu (CreateMenuRequest) returns (Response);
+  rpc GetMenuList (EmptyRequest) returns (GetMenuListResponse);
+  rpc DeleteMenu (MenuId) returns (Response);
+  rpc UpdateMenu (UpdateMenuRequest) returns (Response);
+
+}
+
